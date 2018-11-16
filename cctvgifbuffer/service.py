@@ -29,7 +29,7 @@ def camworker(name, config, queue, lock):
                 queue.append(imageio.imread(io.BytesIO(resp.content), format='jpg'))
             if len(queue) > 30:
                 queue.popleft()
-        time.sleep(2)
+        time.sleep(float(config["interval"]))
 
 
 class Service(object):
