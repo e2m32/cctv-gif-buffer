@@ -18,13 +18,13 @@ def main():
 
     # logging.basicConfig(level=logging.INFO, format='%(levelname)8s [%(asctime)s] %(message)s')
 
-    # parser = argparse.ArgumentParser(description="CCTV GIF Buffer")
-    # parser.add_argument("-c", "--config", help="Config file", required=True)
-    # parser.add_argument("-v", "--verbose", help="Increase verbosity", action="store_true")
-    # args = parser.parse_args()
+    parser = argparse.ArgumentParser(description="CCTV GIF Buffer")
+    parser.add_argument("-c", "--config", help="Config file", required=True)
+    parser.add_argument("-v", "--verbose", help="Increase verbosity", action="store_true")
+    args = parser.parse_args()
 
     # check config exists
-    cfgpath = '/usr/local/cctv-gif-buffer/config.yaml'  # args.config.strip()
+    cfgpath = args.config.strip() # '/usr/local/cctv-gif-buffer/config.yaml' 
     if os.path.isfile(cfgpath) is False:
         LOG.fatal("Specified config file does not exist: %s", cfgpath)
         sys.exit(1)
