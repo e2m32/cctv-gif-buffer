@@ -15,7 +15,7 @@ Example uses:
 
 `GET http://<ip_address>:8080/gif?camera=<camera_name>&duration=60&interval=0.25`
 
-![Screenshot](https://raw.github.com/natm/cctv-gif-buffer/master/docs/demo1.gif)
+![Screenshot](https://raw.github.com/e2m32/cctv-gif-buffer/master/docs/demo1.gif)
 
 ## Configuration
 
