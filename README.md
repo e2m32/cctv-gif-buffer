@@ -6,14 +6,14 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/natm/cctv-gif-buffer/badges/quality-score.png)](https://scrutinizer-ci.com/g/natm/cctv-gif-buffer/)
 [![Docker build](https://img.shields.io/docker/automated/natmorris/cctv-gif-buffer.svg)](https://hub.docker.com/r/natmorris/cctv-gif-buffer/)
 
-Polls IP CCTV cameras every couple of seconds (configurable), stores the last 1 minute in an in-memory ring buffer per camera. Provides a simple HTTP endpoint to retrieve a GIF. This service is designed to be easily integrated with home automation systems.
+Polls IP CCTV cameras every X time (configurable), stores the last X frames in an in-memory ring buffer per camera. Provides a simple HTTP endpoint to retrieve a GIF. This service is designed to be easily integrated with home automation systems.
 
 Example uses:
 
-* Send you a private message containing the last 20 seconds of motion when the door opens
+* Send you a private message containing the last X frames of motion when the door opens
 * Post a GIF to a private slack channel when the door bell is rang
 
-`GET /gif?camera=frontdoor&duration=60&interval=0.25`
+`GET http://<ip_address>:8080/gif?camera=<camera_name>&duration=60&interval=0.25`
 
 ![Screenshot](https://raw.github.com/natm/cctv-gif-buffer/master/docs/demo1.gif)
 
@@ -26,9 +26,11 @@ cameras:
   frontdoor:
     url: http://192.168.0.9/ISAPI/Streaming/channels/101/picture
     interval: 2
+    store: 30
   backdoor:
     url: http://192.168.0.10/jpg/1/image.jpg
     interval: 2
+    store: 30
     auth: basic
     username: admin
     password: letmein
@@ -41,22 +43,23 @@ server:
 Per camera fields:
 
   * `url`: URL to retrieve a JPEG from the camera from. (required)
-  * `interval`: Time in seconds between polls (required)
+  * `interval`: Time in seconds between polls (default = 1)
+  * `store` : Number of frames to store in the ring buffer (default = 30)
   * `auth`: HTTP authentication type, only `basic` is supported (optional)
   * `username`: HTTP basic authentication username
   * `password`: HTTP basic authentication password
 
 ## Usage
 
-`./buffer.py -c home.yaml`
+`python2.7 buffer.py -c config.yaml`
 
 ## Deployment
 
 ### Quick and easy - Docker!
 
 ```
-docker pull natmorris/cctv-gif-buffer:latest
-docker run -d --name cctvgifbuffer --rm -v /etc/cctvgifbuffer:/config -p 8080:8080 -t natmorris/cctv-gif-buffer
+docker pull e2m32/cctv-gif-buffer:latest
+docker run -d --name cctvgifbuffer --rm -v /etc/cctvgifbuffer:/config -p 8080:8080 -t e2m32/cctv-gif-buffer
 ```
 
 ### Dependencies
@@ -66,7 +69,7 @@ libjpeg, install on Mac `brew install libjpeg`
 ### Installation
 
 ```
-git@github.com:natm/cctv-gif-buffer.git
+git@github.com:e2m32/cctv-gif-buffer.git
 cd cctv-gif-buffer
 virtualenv venv
 source venv/bin/activate
