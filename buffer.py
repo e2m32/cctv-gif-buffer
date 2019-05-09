@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # Nat Morris (c) 2017
+# @E2M32 Edits: share logger with service, kill parser and set hardcode cfgpath
 
 import argparse
 import logging
@@ -8,22 +9,22 @@ import signal
 import sys
 import yaml
 
-from cctvgifbuffer.service import Service
+from cctvgifbuffer.service import Service, LOG
 
-LOG = logging.getLogger(__name__)
+# LOG = logging.getLogger(__name__)
 
 
 def main():
 
-    logging.basicConfig(level=logging.INFO, format='%(levelname)8s [%(asctime)s] %(message)s')
+    # logging.basicConfig(level=logging.INFO, format='%(levelname)8s [%(asctime)s] %(message)s')
 
-    parser = argparse.ArgumentParser(description="CCTV GIF Buffer")
-    parser.add_argument("-c", "--config", help="Config file", required=True)
-    parser.add_argument("-v", "--verbose", help="Increase verbosity", action="store_true")
-    args = parser.parse_args()
+    # parser = argparse.ArgumentParser(description="CCTV GIF Buffer")
+    # parser.add_argument("-c", "--config", help="Config file", required=True)
+    # parser.add_argument("-v", "--verbose", help="Increase verbosity", action="store_true")
+    # args = parser.parse_args()
 
     # check config exists
-    cfgpath = args.config.strip()
+    cfgpath = '/usr/local/cctv-gif-buffer/config.yaml'  # args.config.strip()
     if os.path.isfile(cfgpath) is False:
         LOG.fatal("Specified config file does not exist: %s", cfgpath)
         sys.exit(1)
